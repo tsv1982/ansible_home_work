@@ -1,0 +1,32 @@
+---
+# tasks file for my_mysql
+
+- name: Install MySQL
+  apt:
+       name: "{{ item }}"
+       state: present
+  loop:
+       - mysql-server
+       - mysql-client
+       - python3-mysqldb
+       - mysql-common
+  notify: 
+       - Generate password random
+       - Create my.cnf with root password credentials
+       - Create user root
+       - Create role
+       - Create user tsv
+       - Create the MySQL database       
+       
+#  when: ansible_os_family== "Debian11"
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Start MySQL
+  service:
+        name: mysql
+        state: started
+        enabled: yes
+
+
+
+
